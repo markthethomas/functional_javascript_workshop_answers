@@ -1,8 +1,7 @@
 function doubleAll(numbers) {
-  var result = numbers.map(function(num) {
-    return num * 2;
+  return numbers.map(function (num) {
+    return num * 2
   })
-  return result
 }
 
-module.exports = doubleAll
+module.exports = doubleAll;
