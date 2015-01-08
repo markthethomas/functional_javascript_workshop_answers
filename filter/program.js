@@ -1,7 +1,7 @@
 function getShortMessages(messages) {
-  messages.filter(function (item) {
+  messages.filter(function(item) {
     return item.message.length < 50
-  }).map(function (item) {
+  }).map(function(item) {
     return item.message
   })
 }
