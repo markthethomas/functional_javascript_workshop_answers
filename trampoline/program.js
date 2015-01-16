@@ -1,22 +1,19 @@
-function Car( model, year, miles ) {
+function repeat(operation, num) {
+  return function() {
+    if (num <= 0) return
+      operation()
+      return repeat(operation, --num)
+    }
+  }
 
-  this.model = model;
-  this.year = year;
-  this.miles = miles;
+  function trampoline(fn) {
+    while(typeof fn === 'function') {
+      fn = fn()
+    }
+  }
 
-}
-
-
-// Note here that we are using Object.prototype.newMethod rather than
-// Object.prototype so as to avoid redefining the prototype object
-Car.prototype.toString = function () {
-  return this.model + " has done " + this.miles + " miles";
-};
-
-// Usage:
-
-var civic = new Car( "Honda Civic", 2009, 20000 );
-var mondeo = new Car( "Ford Mondeo", 2010, 5000 );
-
-console.log( civic.toString() );
-console.log( mondeo.toString() );
+  module.exports = function(operation, num) {
+    trampoline(function() {
+      return repeat(operation, num)
+    })
+  }
