@@ -16,16 +16,27 @@ var tree = {
   }
 }
 
-function getDependencies(tree) {
+function getDependencies(tree, widthIndex) {
   // SOLUTION GOES HERE
   // Note: Feel free to add additional arguments
   // to this function for use with recursive calls.
   // Or not! There are many ways to recurse.
 
-  for (item in tree) {
-    console.log(Object.keys(tree));
+  var widthIndex = widthIndex || 0
+  var deps = []
+  var treeObj = tree[Object.keys(tree)[0]]
+  if (tree.hasOwnProperty('dependencies')) {
+    getDependencies(tree.dependencies);
+  } else {
+    if (Object.keys(tree).length >= widthIndex && !tree.hasOwnProperty('dependencies') ) {
+      deps.push(Object.keys(tree)[widthIndex] + '@' + treeObj.version)
+      console.log("Width index is currently" + widthIndex);
+      console.log(deps)
+      widthIndex += 1
+      getDependencies(tree, widthIndex)
+    }
+    getDependencies(treeObj.dependencies);
   }
-
 }
 
 getDependencies(tree)
