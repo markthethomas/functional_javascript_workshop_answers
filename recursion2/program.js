@@ -1,42 +1,15 @@
-var tree = {
-  "name": "lorem-ipsum",
-  "version": "0.1.1",
-  "dependencies": {
-    "optimist": {
-      "version": "0.3.7",
-      "dependencies": {
-        "wordwrap": {
-          "version": "0.0.2"
-        }
-      }
-    },
-    "inflection": {
-      "version": "1.2.6"
-    }
-  }
+'use strict';
+
+function getDependencies(mod, result) {
+  result = result || [];
+  var dependencies = mod.dependencies || [];
+  Object.keys(dependencies).forEach(function(dep) {
+    var key = dep + '@' + mod.dependencies[dep].version;
+    if (result.indexOf(key) === -1) result.push(key)
+      getDependencies(mod.dependencies[dep], result);
+  });
+  return result.sort();
 }
 
-function getDependencies(tree, widthIndex) {
-  // SOLUTION GOES HERE
-  // Note: Feel free to add additional arguments
-  // to this function for use with recursive calls.
-  // Or not! There are many ways to recurse.
 
-  var widthIndex = widthIndex || 0
-  var deps = []
-  var treeObj = tree[Object.keys(tree)[0]]
-  if (tree.hasOwnProperty('dependencies')) {
-    getDependencies(tree.dependencies);
-  } else {
-    if (Object.keys(tree).length >= widthIndex && !tree.hasOwnProperty('dependencies') ) {
-      deps.push(Object.keys(tree)[widthIndex] + '@' + treeObj.version)
-      console.log("Width index is currently" + widthIndex);
-      console.log(deps)
-      widthIndex += 1
-      getDependencies(tree, widthIndex)
-    }
-    getDependencies(treeObj.dependencies);
-  }
-}
-
-getDependencies(tree)
+module.exports = getDependencies
